@@ -4,17 +4,18 @@ using System.Collections;
 [RequireComponent (typeof (Controller2D))]
 public class Player : MonoBehaviour {
 		 
-	public float jumpHeight = 6;
-	public float timeToJumpApex = .4f;
-	float airborneAccelerationTime = .3f;
-	float groundedAccelerationTime = .1f;
+	public float jumpHeight = 4f;
+	public float timeToJumpApex = 2f;
+	float airborneAccelerationTime = .5f;
+	float groundedAccelerationTime = .3f;
 
 	float gravity;
 	float jumpVelocity;
 
-	float moveSpeed = 8;
+	float moveSpeed = 13;
 
 	Vector3 velocity;
+	Vector3 input;
 	Controller2D controller;
 	float velocityXSmoothing;
 	
@@ -24,14 +25,13 @@ public class Player : MonoBehaviour {
 		gravity = -(2 * jumpHeight) / Mathf.Pow (timeToJumpApex, 2);
 		jumpVelocity = Mathf.Abs(gravity) * timeToJumpApex;
 		print (gravity + " " + jumpVelocity);
+		input = new Vector3(Input.GetAxisRaw ("Horizontal") + .8f, Input.GetAxisRaw("Vertical"));
 	}
 
 	void Update() {
-		if (controller.collisions.above || controller.collisions.below) {
+		if (controller.collisions.above) {
 			velocity.y = 0;
 		}
-
-		Vector3 input = new Vector3(Input.GetAxisRaw ("Horizontal"), Input.GetAxisRaw("Vertical"));
 
 		if (Input.GetKeyDown (KeyCode.Space) && controller.collisions.below) {
 			velocity.y = jumpVelocity;
